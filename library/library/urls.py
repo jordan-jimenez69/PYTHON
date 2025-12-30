@@ -1,8 +1,10 @@
-from django.contrib import admin
-from django.urls import include, path
+# DEPRECATED: This urls module belonged to the old layout. The project now uses
+# `library_project.urls` as the root URLconf. Keep this file only for reference.
+
+from django.urls import path
+from django.http import HttpResponse
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include(('library.urls_app', 'library'), namespace='library')),
-    path('books/', include(('books.urls', 'books'), namespace='books')),
+    path('', lambda request: HttpResponse('Deprecated: use the new project root (library_project).')),
 ]
+

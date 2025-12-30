@@ -1,7 +1,3 @@
-import os
-
-from django.core.asgi import get_asgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
-
-application = get_asgi_application()
+# DEPRECATED: This module was part of the old project layout.
+# Use `library_project.asgi` instead.
+raise ImportError("Deprecated module. Use 'library_project.asgi' instead.")

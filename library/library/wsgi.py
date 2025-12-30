@@ -1,7 +1,3 @@
-import os
-
-from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
-
-application = get_wsgi_application()
+# DEPRECATED: This module was part of the old project layout.
+# Use `library_project.wsgi` instead.
+raise ImportError("Deprecated module. Use 'library_project.wsgi' instead.")
