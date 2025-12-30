@@ -1,9 +1,9 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def home(request):
-    return HttpResponse("Bienvenue")
+    return render(request, 'home.html')
 
 
 def book_list(request):
-    return HttpResponse("Liste des livres")
+    return render(request, 'books/book_list.html')
