@@ -13,7 +13,8 @@
             <td>{{ loan.due_date|date:'SHORT_DATETIME_FORMAT' }}</td>
             <td>{{ loan|days_overdue }}</td>
             <td>{{ loan|penalty_amount }}</td>
-            <td>{% load book_extras %}{{ loan_status_badge(loan) }}</td>
+            {% load book_extras %}
+            <td>{% loan_status_badge loan %}</td>
           </tr>
         {% endfor %}
       </tbody>

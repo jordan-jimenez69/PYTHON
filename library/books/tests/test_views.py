@@ -7,7 +7,8 @@ class BookViewsTest(TestCase):
     def setUp(self):
         self.author = Author.objects.create(first_name='Jean', last_name='Dupont')
         for i in range(15):
-            Book.objects.create(title=f'Book {i}', isbn=f'978000000000{i%10}', author=self.author, copies_available=1, copies_total=1)
+            isbn = '978' + str(1000000000 + i)  # ensure unique 13-digit ISBNs
+            Book.objects.create(title=f'Book {i}', isbn=isbn, author=self.author, copies_available=1, copies_total=1)
 
     def test_book_list_pagination(self):
         url = reverse('books:book_list')

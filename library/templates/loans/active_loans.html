@@ -11,7 +11,8 @@
             <td><a href="{% url 'books:book_detail' loan.book.pk %}">{{ loan.book.title }}</a></td>
             <td>{{ loan.borrower_name }} ({{ loan.card_number }})</td>
             <td>{{ loan.due_date|date:'SHORT_DATETIME_FORMAT' }}</td>
-            <td>{% load book_extras %}{{ loan_status_badge(loan) }}</td>
+            {% load book_extras %}
+            <td>{% loan_status_badge loan %}</td>
             <td>
               <form method="post" action="{% url 'books:loan_return' loan.pk %}">{% csrf_token %}
                 <button class="btn btn-sm btn-success">Marquer rendu</button>

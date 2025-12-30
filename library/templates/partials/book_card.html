@@ -1,3 +1,4 @@
+{% load book_extras %}
 <div class="card h-100">
   <div class="card-body">
     <h5 class="card-title"><a href="{% url 'books:book_detail' book.pk %}">{{ book.title }}</a></h5>
