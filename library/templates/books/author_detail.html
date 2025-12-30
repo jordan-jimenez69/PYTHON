@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{{ author.full_name }}{% endblock %}
+{% block content %}
+  <h1>{{ author.full_name }}</h1>
+  {% if author.photo %}
+    <img src="{{ author.photo.url }}" class="img-fluid mb-3" style="max-width:200px;">
+  {% endif %}
+  <p>{{ author.biography|linebreaks }}</p>
+  <h3>Livres de cet auteur</h3>
+  <ul>
+    {% for book in books %}
+      <li><a href="{% url 'books:book_detail' book.pk %}">{{ book.title }}</a> — disponibles: {{ book.copies_available }}</li>
+    {% empty %}
+      <li>Aucun livre pour cet auteur.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

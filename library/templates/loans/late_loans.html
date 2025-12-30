@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Emprunts en retard{% endblock %}
+{% block content %}
+  <h1>Emprunts en retard</h1>
+  {% if loans %}
+    <table class="table">
+      <thead><tr><th>Livre</th><th>Usager</th><th>Due</th><th>Jours</th><th>Pénalité</th></tr></thead>
+      <tbody>
+        {% for loan in loans %}
+          <tr>
+            <td><a href="{% url 'books:book_detail' loan.book.pk %}">{{ loan.book.title }}</a></td>
+            <td>{{ loan.borrower_name }} ({{ loan.card_number }})</td>
+            <td>{{ loan.due_date|date:'SHORT_DATETIME_FORMAT' }}</td>
+            <td>{{ loan.days_overdue }}</td>
+            <td>{{ loan.penalty_amount }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Aucun emprunt en retard.</p>
+  {% endif %}
+{% endblock %}

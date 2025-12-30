@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Historique d'emprunts{% endblock %}
+{% block content %}
+  <h1>Historique pour la carte {{ view.kwargs.card_number }}</h1>
+  {% if loans %}
+    <ul class="list-group">
+      {% for loan in loans %}
+        <li class="list-group-item">
+          {{ loan.book.title }} — {{ loan.status }} — emprunté {{ loan.borrowed_at|date:'SHORT_DATETIME_FORMAT' }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Aucun emprunt trouvé pour cette carte.</p>
+  {% endif %}
+{% endblock %}

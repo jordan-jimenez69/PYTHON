@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Créer un emprunt{% endblock %}
+{% block content %}
+  <h1>Créer un emprunt</h1>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary">Enregistrer l'emprunt</button>
+  </form>
+{% endblock %}
