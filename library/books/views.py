@@ -112,3 +112,83 @@ class LoanReturnView(View):
 # simple convenience redirect for the app root
 def index_redirect(request):
     return redirect('books:book_list')
+
+
+# -------------------------
+# Function-based view counterparts
+# -------------------------
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
+def book_list_fbv(request, category_id=None, author_id=None):
+    q = request.GET.get('q')
+    qs = Book.objects.select_related('author', 'category').all().order_by('title')
+    if q:
+        qs = qs.filter(Q(title__icontains=q) | Q(isbn__icontains=q) | Q(author__first_name__icontains=q) | Q(author__last_name__icontains=q))
+    if category_id:
+        qs = qs.filter(category_id=category_id)
+    if author_id:
+        qs = qs.filter(author_id=author_id)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(qs, 8)
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    context = {'books': page_obj.object_list, 'page_obj': page_obj, 'paginator': paginator}
+    return render(request, 'books/book_list.html', context)
+
+
+def book_detail_fbv(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    return render(request, 'books/book_detail.html', {'book': book})
+
+
+def author_list_fbv(request):
+    q = request.GET.get('q')
+    qs = Author.objects.all().order_by('last_name', 'first_name')
+    if q:
+        qs = qs.filter(Q(first_name__icontains=q) | Q(last_name__icontains=q))
+    page = request.GET.get('page', 1)
+    paginator = Paginator(qs, 12)
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+    return render(request, 'books/author_list.html', {'authors': page_obj.object_list, 'page_obj': page_obj})
+
+
+def author_detail_fbv(request, pk):
+    author = get_object_or_404(Author, pk=pk)
+    books = author.books.all()
+    return render(request, 'books/author_detail.html', {'author': author, 'books': books})
+
+
+from django.contrib import messages
+
+
+def loan_create_fbv(request):
+    if request.method == 'POST':
+        form = LoanCreateForm(request.POST)
+        if form.is_valid():
+            loan = form.save()
+            messages.success(request, 'Emprunt créé avec succès.')
+            return redirect('books:loans_active')
+    else:
+        form = LoanCreateForm()
+    return render(request, 'loans/loan_form.html', {'form': form})
+
+
+def loan_return_fbv(request, pk):
+    loan = get_object_or_404(Loan, pk=pk)
+    if request.method == 'POST':
+        loan.mark_returned()
+        messages.success(request, 'Emprunt marqué comme rendu.')
+        return redirect('books:loans_active')
+    return render(request, 'loans/loan_return.html', {'loan': loan})

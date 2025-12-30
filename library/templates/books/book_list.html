@@ -18,14 +18,8 @@
   <div class="row">
     {% for book in books %}
       <div class="col-md-6 mb-3">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title"><a href="{% url 'books:book_detail' book.pk %}">{{ book.title }}</a></h5>
-            <p class="card-text">{{ book.author.full_name }}</p>
-            <p class="card-text small text-muted">ISBN: {{ book.isbn }} — Disponibles: {{ book.copies_available }}</p>
-            <a href="{% url 'books:book_detail' book.pk %}" class="btn btn-sm btn-outline-primary">Voir</a>
-          </div>
-        </div>
+        {% load book_extras %}
+        {% book_card book %}
       </div>
     {% endfor %}
   </div>
